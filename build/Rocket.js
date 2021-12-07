@@ -1,22 +1,18 @@
 import Game from './Game.js';
-import GameItem from './GameItem.js';
-export default class Rocket extends GameItem {
+import ScoringItem from './ScoringItem.js';
+export default class Rocket extends ScoringItem {
     type;
-    image;
-    game;
-    constructor(name, xPos, yPos, speed, type, image) {
-        super(name, xPos, yPos, speed);
+    constructor(name, xPos, yPos, speed, type) {
+        super(name, xPos, yPos, speed, 3);
         this.type = type;
-        this.image = image;
-    }
-    getXPos() {
-        return this.xPosition;
-    }
-    getYPos() {
-        return this.yPosition;
-    }
-    getImage() {
-        return this.image;
+        if (type === 'leftToRight') {
+            this.xPosition = 0;
+            this.setImage(Rocket.loadNewImage('./assets/rocket-horizontal.png'));
+        }
+        else {
+            this.yPosition = 0;
+            this.setImage(Rocket.loadNewImage('./assets/rocket-vertical.png'));
+        }
     }
     move() {
         if (this.type === 'leftToRight') {
@@ -28,18 +24,15 @@ export default class Rocket extends GameItem {
     }
     outOfCanvas(width, height, canvas) {
         if (this.type === 'leftToRight') {
-            if (this.xPosition + this.image.width >= canvas.width) {
+            if (this.xPosition + this.getImage().width >= canvas.width) {
                 this.xPosition = 0;
                 this.yPosition = Game.randomInteger(0, canvas.height);
             }
         }
-        else if (this.yPosition + this.image.height >= canvas.height) {
+        else if (this.yPosition + this.getImage().height >= canvas.height) {
             this.yPosition = 0;
             this.xPosition = Game.randomInteger(0, canvas.height);
         }
-    }
-    draw(ctx) {
-        ctx.drawImage(this.image, this.xPosition, this.yPosition);
     }
 }
 //# sourceMappingURL=Rocket.js.map

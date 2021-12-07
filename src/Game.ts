@@ -1,9 +1,11 @@
 import KeyboardListener from './KeyboardListener.js';
 import Player from './Player.js';
+import PowerUp from './PowerUp.js';
 import Rocket from './Rocket.js';
+import ScoringItem from './ScoringItem.js';
 
 export default class Game {
-  private rockets: Rocket[];
+  private scoringItems: ScoringItem[];
 
   private player: Player;
 
@@ -14,6 +16,8 @@ export default class Game {
   private ctx: CanvasRenderingContext2D;
 
   private keyBoardListener: KeyboardListener;
+
+  private framecounter: number;
 
   /**
    * Construct the Game
@@ -26,26 +30,27 @@ export default class Game {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
     this.ctx = this.canvas.getContext('2d');
-    this.rockets = [];
+    this.scoringItems = [];
 
     this.keyBoardListener = new KeyboardListener();
 
     // add some rockets
     for (let index = 0; index < 10; index++) {
       if (index % 2 === 0) {
-        this.rockets.push(this.rocketFactory('Rocket', 'leftToRight'));
+        this.scoringItems.push(this.rocketFactory('Rocket', 'leftToRight'));
         console.log('leftToRight');
       } else {
-        this.rockets.push(this.rocketFactory('Rocket', 'topToBottom'));
+        this.scoringItems.push(this.rocketFactory('Rocket', 'topToBottom'));
       }
     }
 
-    console.log(this.rockets);
+    console.log(this.scoringItems);
 
     this.player = this.createPlayer('Me');
     console.log(this.player);
 
     this.score = 0;
+    this.framecounter = 0;
     this.loop();
   }
 
@@ -54,10 +59,17 @@ export default class Game {
    */
   public loop = (): void => {
     this.score += 1;
+    this.framecounter += 1;
     this.draw();
     this.move();
-    this.rocketOutOfCanvas();
-    this.player.collidesWithRocket(this.rockets);
+    this.scoringItemOutOfCanvas();
+    this.player.collidesWithScoringItem(this.scoringItems);
+
+    // Every 500 frames add a power up
+    if (this.framecounter % 500 === 0) {
+      const speed = Game.randomInteger(0, 15);
+      this.scoringItems.push(new PowerUp('PowerUp', this.canvas.width, this.canvas.height, speed));
+    }
 
     this.player.move();
 
@@ -93,7 +105,7 @@ export default class Game {
       image = Game.loadNewImage('./assets/rocket-vertical.png');
     }
     const speed = Game.randomInteger(0, 15);
-    return new Rocket(name, xPosition, yPosition, speed, type, image);
+    return new Rocket(name, xPosition, yPosition, speed, type);
   }
 
   /**
@@ -117,7 +129,7 @@ export default class Game {
    * Method to move the rockets
    */
   public move(): void {
-    this.rockets.forEach((rocket) => {
+    this.scoringItems.forEach((rocket) => {
       rocket.move();
     });
   }
@@ -125,9 +137,9 @@ export default class Game {
   /**
    * Method to determine of a rocket leaves the window
    */
-  public rocketOutOfCanvas(): void {
-    this.rockets.forEach((rocket) => {
-      rocket.outOfCanvas(this.canvas.width, this.canvas.height, this.canvas);
+  public scoringItemOutOfCanvas(): void {
+    this.scoringItems.forEach((scoringItem) => {
+      scoringItem.outOfCanvas(this.canvas.width, this.canvas.height, this.canvas);
     });
   }
 
@@ -154,12 +166,12 @@ export default class Game {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.player.draw(this.ctx);
     // when there are elements in the rocket array
-    if (this.rockets.length !== 0) {
+    if (this.scoringItems.length !== 0) {
       // clear the canvas
 
       // draw each rocket
-      this.rockets.forEach((rocket) => {
-        rocket.draw(this.ctx);
+      this.scoringItems.forEach((scoringItem) => {
+        scoringItem.draw(this.ctx);
       });
 
       //  write the current score

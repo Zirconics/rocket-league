@@ -27,21 +27,21 @@ export default class Player extends GameItem {
             this.yPosition += this.speed;
         }
     }
-    collidesWithRocket(rockets) {
-        rockets.forEach((rocket) => {
+    collidesWith(scoringItems) {
+        scoringItems.forEach((scoringItem) => {
             let testX;
             let testY;
-            if (this.xPosition < rocket.getXPos()) {
-                testX = rocket.getXPos();
+            if (this.xPosition < scoringItem.getXPos()) {
+                testX = scoringItem.getXPos();
             }
-            else if (this.xPosition > rocket.getXPos() + rocket.getImage().width) {
-                testX = rocket.getXPos() + rocket.getImage().width;
+            else if (this.xPosition > scoringItem.getXPos() + scoringItem.getImage().width) {
+                testX = scoringItem.getXPos() + scoringItem.getImage().width;
             }
-            if (this.yPosition < rocket.getYPos()) {
-                testY = rocket.getYPos();
+            if (this.yPosition < scoringItem.getYPos()) {
+                testY = scoringItem.getYPos();
             }
-            else if (this.yPosition > rocket.getYPos() + rocket.getImage().height) {
-                testY = rocket.getYPos() + rocket.getImage().height;
+            else if (this.yPosition > scoringItem.getYPos() + scoringItem.getImage().height) {
+                testY = scoringItem.getYPos() + scoringItem.getImage().height;
             }
             const distX = this.xPosition - testX;
             const distY = this.yPosition - testY;
