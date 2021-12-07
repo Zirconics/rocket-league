@@ -1,11 +1,11 @@
 export default class GameItem {
   private name: string;
 
-  private xPos: number;
+  protected xPosition: number;
 
-  private yPos: number;
+  protected yPosition: number;
 
-  private speed: number;
+  protected speed: number;
 
   /**
    * Initialise the GameItem
@@ -17,35 +17,8 @@ export default class GameItem {
    */
   public constructor(name: string, xPos: number, yPos: number, speed: number) {
     this.name = name;
-    this.xPos = xPos;
-    this.yPos = yPos;
+    this.xPosition = xPos;
+    this.yPosition = yPos;
     this.speed = speed;
-  }
-
-  /**
-   * Getter for GameItem name
-   *
-   * @returns name of GameItem
-   */
-  public getName(): string {
-    return this.name;
-  }
-
-  /**
-   * Getter for GameItem x position.
-   *
-   * @returns x position of GameItem
-   */
-  public getXPos(): number {
-    return this.xPos;
-  }
-
-  /**
-   * Getter for GameItem y position.
-   *
-   * @returns y position of GameItem
-   */
-  public getYPos(): number {
-    return this.yPos;
   }
 }

@@ -57,7 +57,7 @@ export default class Game {
     this.draw();
     this.move();
     this.rocketOutOfCanvas();
-    this.playerCollidesWithRocket();
+    this.player.collidesWithRocket(this.rockets);
 
     this.player.move();
 
@@ -80,7 +80,7 @@ export default class Game {
    * - speed: speed of the rocket
    * - image: an HTMLimageElement
    */
-  public rocketFactory(name: string, type: string): any {
+  public rocketFactory(name: string, type: string): Rocket {
     let xPosition = Game.randomInteger(0, this.canvas.width - 200);
     let yPosition = Game.randomInteger(0, this.canvas.height - 200);
     let image: HTMLImageElement;
@@ -92,15 +92,8 @@ export default class Game {
       yPosition = 0;
       image = Game.loadNewImage('./assets/rocket-vertical.png');
     }
-
-    return {
-      name: name,
-      xPos: xPosition,
-      yPos: yPosition,
-      type: type,
-      speed: Game.randomInteger(0, 15),
-      image: image,
-    };
+    const speed = Game.randomInteger(0, 15);
+    return new Rocket(name, xPosition, yPosition, speed, type, image);
   }
 
   /**
@@ -109,44 +102,15 @@ export default class Game {
    * @param name - name of the player
    * @returns player - player object
    */
-  public createPlayer(name: string): any {
-    return {
-      name: name,
-      xPos: this.canvas.width / 2,
-      yPos: this.canvas.height / 2,
-      radius: 15,
-      speed: 4,
-    };
-  }
-
-  /**
-   * Method to determine of the player is colliding with a rocket
-   */
-  public playerCollidesWithRocket(): void {
-    this.rockets.forEach((rocket) => {
-      let testX: number;
-      let testY: number;
-      if (this.player.xPos < rocket.xPos) {
-        testX = rocket.xPos;
-      } else if (this.player.xPos > rocket.xPos + rocket.image.width) {
-        testX = rocket.xPos + rocket.image.width;
-      }
-
-      if (this.player.yPos < rocket.yPos) {
-        testY = rocket.yPos;
-      } else if (this.player.yPos > rocket.yPos + rocket.image.height) {
-        testY = rocket.yPos + rocket.image.height;
-      }
-
-      const distX = this.player.xPos - testX;
-      const distY = this.player.yPos - testY;
-      const distance = Math.sqrt(distX * distX + distY * distY);
-
-      if (distance <= this.player.radius) {
-        console.log('Collides with Player');
-        this.player.radius += 3;
-      }
-    });
+  public createPlayer(name: string): Player {
+    return new Player(name, this.canvas.width / 2, this.canvas.height / 2);
+    // return {
+    //   name: name,
+    //   xPos: this.canvas.width / 2,
+    //   yPos: this.canvas.height / 2,
+    //   radius: 15,
+    //   speed: 4,
+    // };
   }
 
   /**
@@ -154,11 +118,7 @@ export default class Game {
    */
   public move(): void {
     this.rockets.forEach((rocket) => {
-      if (rocket.type === 'leftToRight') {
-        rocket.xPos += rocket.speed;
-      } else {
-        rocket.yPos += rocket.speed;
-      }
+      rocket.move();
     });
   }
 
@@ -167,15 +127,7 @@ export default class Game {
    */
   public rocketOutOfCanvas(): void {
     this.rockets.forEach((rocket) => {
-      if (rocket.type === 'leftToRight') {
-        if (rocket.xPos + rocket.image.width >= this.canvas.width) {
-          rocket.xPos = 0;
-          rocket.yPos = Game.randomInteger(0, this.canvas.height);
-        }
-      } else if (rocket.yPos + rocket.image.height >= this.canvas.height) {
-        rocket.yPos = 0;
-        rocket.xPos = Game.randomInteger(0, this.canvas.height);
-      }
+      rocket.outOfCanvas(this.canvas.width, this.canvas.height, this.canvas);
     });
   }
 
@@ -200,45 +152,24 @@ export default class Game {
    */
   public draw(): void {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.drawPlayer();
+    this.player.draw(this.ctx);
     // when there are elements in the rocket array
     if (this.rockets.length !== 0) {
       // clear the canvas
 
       // draw each rocket
       this.rockets.forEach((rocket) => {
-        this.ctx.drawImage(rocket.image, rocket.xPos, rocket.yPos);
+        rocket.draw(this.ctx);
       });
 
       //  write the current score
       this.writeTextToCanvas(
         `Score is: ${this.score}`,
-        40,
         this.canvas.width / 2,
+        40,
         40,
       );
     }
-  }
-
-  /**
-   * Method to draw the player
-   */
-  public drawPlayer(): void {
-    // console.log(this.player);
-    this.ctx.beginPath();
-    this.ctx.arc(
-      this.player.xPos,
-      this.player.yPos,
-      this.player.radius,
-      0,
-      Math.PI * 2,
-      false,
-    );
-    this.ctx.fillStyle = 'red';
-    this.ctx.fill();
-    this.ctx.lineWidth = 2;
-    this.ctx.strokeStyle = 'red';
-    this.ctx.stroke();
   }
 
   /**
