@@ -39,7 +39,7 @@ export default class Game {
         this.draw();
         this.move();
         this.scoringItemOutOfCanvas();
-        this.player.collidesWith(this.scoringItems);
+        this.player.collidesWithScoringItem(this.scoringItems);
         if (this.framecounter % 500 === 0) {
             const speed = Game.randomInteger(0, 15);
             this.scoringItems.push(new PowerUp('PowerUp', this.canvas.width, this.canvas.height, speed));

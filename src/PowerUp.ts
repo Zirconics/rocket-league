@@ -2,40 +2,41 @@ import ScoringItem from './ScoringItem.js';
 
 export default class PowerUp extends ScoringItem {
   /**
-   * Initialises PowerUp
+   * Constructor of PowerUp
    *
-   * @param name Name of PowerUp
-   * @param xPos X Position of PowerUp
-   * @param yPos Y Position of PowerUp
-   * @param speed Speed of PowerUp
+   * @param canvasWidth width
+   * @param canvasHeight height
    */
-  public constructor(
-    name: string,
-    xPos: number,
-    yPos: number,
-    speed: number,
-  ) {
-    super(name, xPos, yPos, speed, -6);
+  public constructor(canvasWidth: number, canvasHeight: number) {
+    super('PowerUp');
+
+    const xPosition = ScoringItem.randomInteger(0, canvasWidth - 200);
+    const yPosition = ScoringItem.randomInteger(0, canvasHeight - 200);
+
     this.setImage(ScoringItem.loadNewImage('./assets/face_on_plus_health.png'));
+
+    this.setXPos(xPosition);
+    this.setYPos(yPosition);
+
+    this.setPoints(-3);
   }
 
   /**
-   * Moves for powerup
-   */
-  public move(): void {
-    this.setXPos(ScoringItem.randomInteger(this.getYPos(), 400));
-  }
-
-  /**
-   * Out of canvas
+   * Checks if Rocket is out of canvas
    *
-   * @param width Width of canvas
-   * @param height Height of canvas
+   * @param canvasWidth widht of the canvas
+   * @param canvasHeight height of the canvas
    */
-  public outOfCanvas(width: number, height: number): void {
-    if (this.getXPos() + this.getImage().width >= height) {
-      this.setXPos(ScoringItem.randomInteger(0, width - 200));
-      this.setYPos(ScoringItem.randomInteger(0, height - 200));
-    }
+  // eslint-disable-next-line class-methods-use-this
+  public outOfCanvas(canvasWidth: number, canvasHeight: number): void {
+    // Empty
+  }
+
+  /**
+   * Method to move the Rocket
+   */
+  // eslint-disable-next-line class-methods-use-this
+  public move(): void {
+    // Empty
   }
 }

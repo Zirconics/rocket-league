@@ -1,78 +1,65 @@
 import GameItem from './GameItem.js';
 
 export default abstract class ScoringItem extends GameItem {
-  private points: number;
-
   private image: HTMLImageElement;
 
-  /**
-   * Initialise Scoringobject
-   *
-   * @param name Name of ScoringObject
-   * @param xPos X Position of ScoringObject
-   * @param yPos Y Position of ScoringObject
-   * @param speed Speed of ScoringObject
-   * @param points Points of ScoringObject
-   */
-  public constructor(
-    name: string,
-    xPos: number,
-    yPos: number,
-    speed: number,
-    points: number,
-  ) {
-    super(name, xPos, yPos, speed);
-    this.points = points;
-  }
+  private points: number;
 
   /**
-   * Getter for Rocket's Image element
+   * Getter for image
    *
-   * @returns Image element of Rocket.
+   * @returns Image of scoringItem
    */
   public getImage(): HTMLImageElement {
     return this.image;
   }
 
   /**
-   * Setter for ScoringItem image.
+   * Setter for image
    *
-   * @param image Image of item.
+   * @param img new image value
    */
-  public setImage(image: HTMLImageElement): void {
-    this.image = image;
+  public setImage(img: HTMLImageElement): void {
+    this.image = img;
   }
 
   /**
-   *  Getter for scoringItem points
+   * Getter for ScoringItem points
    *
-   * @returns the amount of points of scoringItem.
+   * @returns The pooint value of ScoringItem
    */
-  public getPoints(): number {
+  public getPoints() {
     return this.points;
   }
 
   /**
+   * Setter for ScoringItems points.
    *
-   *
-   * @param width Canvas width
-   * @param height Canvas height
-   * @param canvas Canvas Element
+   * @param points new value of points
    */
-  public abstract outOfCanvas(width: number, height: number, canvas: HTMLCanvasElement): void;
+  public setPoints(points: number): void {
+    this.points = points;
+  }
+  /**
+   * Checks if ScoringItem is out of canvas
+   *
+   * @param canvasWidth widht of the canvas
+   * @param canvasHeight height of the canvas
+   */
+  public abstract outOfCanvas(canvasWidth: number, canvasHeight: number): void;
 
   /**
-   *
+   * Moves the scoringItem.
    */
   public abstract move(): void;
 
   /**
-   * Draws the ScoringItem.
+   * Method to draw the ScoringItem on the canvas
    *
-   * @param ctx Canvas Rendering Context 2D
+   * @param ctx rendering context
    */
   public draw(ctx: CanvasRenderingContext2D): void {
-    ctx.drawImage(this.image, this.xPosition, this.yPosition);
+    ctx.drawImage(this.image, this.getXPos(), this.getYPos());
   }
 
   /**

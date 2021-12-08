@@ -36,18 +36,19 @@ export default class Player extends GameItem {
   /**
    *
    */
+  // TODO: Fix getXPos and getYPos;
   public move(): void {
     if (this.keyBoardListener.isKeyDown(KeyboardListener.KEY_LEFT)) {
-      this.xPosition -= this.speed;
+      this.xPosition -= this.getSpeed();
     }
     if (this.keyBoardListener.isKeyDown(KeyboardListener.KEY_RIGHT)) {
-      this.xPosition += this.speed;
+      this.xPosition += this.getSpeed();
     }
     if (this.keyBoardListener.isKeyDown(KeyboardListener.KEY_UP)) {
-      this.yPosition -= this.speed;
+      this.yPosition -= this.getSpeed();
     }
     if (this.keyBoardListener.isKeyDown(KeyboardListener.KEY_DOWN)) {
-      this.yPosition += this.speed;
+      this.yPosition += this.getSpeed();
     }
   }
 
@@ -102,8 +103,8 @@ export default class Player extends GameItem {
     // console.log(this.player);
     ctx.beginPath();
     ctx.arc(
-      this.xPosition,
-      this.yPosition,
+      this.getXPos(),
+      this.getYPos(),
       this.radius,
       0,
       Math.PI * 2,

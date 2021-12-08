@@ -67,8 +67,7 @@ export default class Game {
 
     // Every 500 frames add a power up
     if (this.framecounter % 500 === 0) {
-      const speed = Game.randomInteger(0, 15);
-      this.scoringItems.push(new PowerUp('PowerUp', this.canvas.width, this.canvas.height, speed));
+      this.scoringItems.push(new PowerUp(this.canvas.width, this.canvas.height));
     }
 
     this.player.move();
@@ -104,8 +103,8 @@ export default class Game {
       yPosition = 0;
       image = Game.loadNewImage('./assets/rocket-vertical.png');
     }
-    const speed = Game.randomInteger(0, 15);
-    return new Rocket(name, xPosition, yPosition, speed, type);
+
+    return new Rocket(type, xPosition, yPosition);
   }
 
   /**
@@ -139,7 +138,7 @@ export default class Game {
    */
   public scoringItemOutOfCanvas(): void {
     this.scoringItems.forEach((scoringItem) => {
-      scoringItem.outOfCanvas(this.canvas.width, this.canvas.height, this.canvas);
+      scoringItem.outOfCanvas(this.canvas.width, this.canvas.height);
     });
   }
 

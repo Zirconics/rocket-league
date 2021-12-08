@@ -27,28 +27,31 @@ export default class Player extends GameItem {
             this.yPosition += this.speed;
         }
     }
-    collidesWith(scoringItems) {
-        scoringItems.forEach((scoringItem) => {
+    collidesWithScoringItem(scoringItems) {
+        scoringItems.forEach((scoringItem, index) => {
             let testX;
             let testY;
-            if (this.xPosition < scoringItem.getXPos()) {
+            if (this.getXPos() < scoringItem.getXPos()) {
                 testX = scoringItem.getXPos();
             }
-            else if (this.xPosition > scoringItem.getXPos() + scoringItem.getImage().width) {
+            else if (this.getXPos() > scoringItem.getXPos() + scoringItem.getImage().width) {
                 testX = scoringItem.getXPos() + scoringItem.getImage().width;
             }
-            if (this.yPosition < scoringItem.getYPos()) {
+            if (this.getYPos() < scoringItem.getYPos()) {
                 testY = scoringItem.getYPos();
             }
-            else if (this.yPosition > scoringItem.getYPos() + scoringItem.getImage().height) {
+            else if (this.getYPos() > scoringItem.getYPos() + scoringItem.getImage().height) {
                 testY = scoringItem.getYPos() + scoringItem.getImage().height;
             }
-            const distX = this.xPosition - testX;
-            const distY = this.yPosition - testY;
+            const distX = this.getXPos() - testX;
+            const distY = this.getYPos() - testY;
             const distance = Math.sqrt(distX * distX + distY * distY);
             if (distance <= this.radius) {
                 console.log('Collides with Player');
-                this.radius += 3;
+                this.radius += scoringItem.getPoints();
+                if (scoringItem.getPoints() < 0 && this.radius > scoringItem.getPoints() + 3) {
+                    scoringItems.splice(index, 1);
+                }
             }
         });
     }

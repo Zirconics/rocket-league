@@ -1,25 +1,19 @@
-export default class GameItem {
+export default abstract class GameItem {
   private name: string;
 
   protected xPosition: number;
 
   protected yPosition: number;
 
-  protected speed: number;
+  private speed: number;
 
   /**
-   * Initialise the GameItem
+   * Initialize the GameItem class
    *
-   * @param name Name of the GameItem
-   * @param xPos X Position of the GameItem
-   * @param yPos Y Position of the GameItem
-   * @param speed Speed of the GameItem
+   * @param name name of the Game
    */
-  public constructor(name: string, xPos: number, yPos: number, speed: number) {
+  public constructor(name: string) {
     this.name = name;
-    this.xPosition = xPos;
-    this.yPosition = yPos;
-    this.speed = speed;
   }
 
   /**
@@ -56,5 +50,23 @@ export default class GameItem {
    */
   public setYPos(yPos: number): void {
     this.yPosition = yPos;
+  }
+
+  /**
+   * Getter for GameItem speed.
+   *
+   * @returns speed value of GameItem
+   */
+  public getSpeed(): number {
+    return this.speed;
+  }
+
+  /**
+   * Setter for GameItem speed.
+   *
+   * @param speed new value of GameItem speed
+   */
+  public setSpeed(speed: number): void {
+    this.speed = speed;
   }
 }
