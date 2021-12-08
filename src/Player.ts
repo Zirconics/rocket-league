@@ -18,8 +18,10 @@ export default class Player extends GameItem {
    * @param xPos X Position of the player
    * @param yPos Y Position of the player
    */
-  public constructor(name: string, xPos: number, yPos: number) {
-    super(name, xPos, yPos, Player.INITIAL_SPEED);
+  public constructor(xPos: number, yPos: number) {
+    super('tests');
+    this.setXPos(xPos / 2);
+    this.setYPos(yPos / 2);
     this.radius = Player.INITIAL_RADIUS;
     this.keyBoardListener = new KeyboardListener();
   }

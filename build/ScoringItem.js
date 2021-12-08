@@ -1,22 +1,21 @@
 import GameItem from './GameItem.js';
 export default class ScoringItem extends GameItem {
-    points;
     image;
-    constructor(name, xPos, yPos, speed, points) {
-        super(name, xPos, yPos, speed);
-        this.points = points;
-    }
+    points;
     getImage() {
         return this.image;
     }
-    setImage(image) {
-        this.image = image;
+    setImage(img) {
+        this.image = img;
     }
     getPoints() {
         return this.points;
     }
+    setPoints(points) {
+        this.points = points;
+    }
     draw(ctx) {
-        ctx.drawImage(this.image, this.xPosition, this.yPosition);
+        ctx.drawImage(this.image, this.getXPos(), this.getYPos());
     }
     static loadNewImage(source) {
         const img = new Image();

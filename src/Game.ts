@@ -114,7 +114,7 @@ export default class Game {
    * @returns player - player object
    */
   public createPlayer(name: string): Player {
-    return new Player(name, this.canvas.width / 2, this.canvas.height / 2);
+    return new Player(this.canvas.width / 2, this.canvas.height / 2);
     // return {
     //   name: name,
     //   xPos: this.canvas.width / 2,

@@ -5,8 +5,10 @@ export default class Player extends GameItem {
     static INITIAL_SPEED = 4;
     radius;
     keyBoardListener;
-    constructor(name, xPos, yPos) {
-        super(name, xPos, yPos, Player.INITIAL_SPEED);
+    constructor(xPos, yPos) {
+        super('tests');
+        this.setXPos(xPos / 2);
+        this.setYPos(yPos / 2);
         this.radius = Player.INITIAL_RADIUS;
         this.keyBoardListener = new KeyboardListener();
     }
@@ -15,16 +17,16 @@ export default class Player extends GameItem {
     }
     move() {
         if (this.keyBoardListener.isKeyDown(KeyboardListener.KEY_LEFT)) {
-            this.xPosition -= this.speed;
+            this.xPosition -= this.getSpeed();
         }
         if (this.keyBoardListener.isKeyDown(KeyboardListener.KEY_RIGHT)) {
-            this.xPosition += this.speed;
+            this.xPosition += this.getSpeed();
         }
         if (this.keyBoardListener.isKeyDown(KeyboardListener.KEY_UP)) {
-            this.yPosition -= this.speed;
+            this.yPosition -= this.getSpeed();
         }
         if (this.keyBoardListener.isKeyDown(KeyboardListener.KEY_DOWN)) {
-            this.yPosition += this.speed;
+            this.yPosition += this.getSpeed();
         }
     }
     collidesWithScoringItem(scoringItems) {
@@ -57,7 +59,7 @@ export default class Player extends GameItem {
     }
     draw(ctx) {
         ctx.beginPath();
-        ctx.arc(this.xPosition, this.yPosition, this.radius, 0, Math.PI * 2, false);
+        ctx.arc(this.getXPos(), this.getYPos(), this.radius, 0, Math.PI * 2, false);
         ctx.fillStyle = 'red';
         ctx.fill();
         ctx.lineWidth = 2;

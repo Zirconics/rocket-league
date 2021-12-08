@@ -3,11 +3,8 @@ export default class GameItem {
     xPosition;
     yPosition;
     speed;
-    constructor(name, xPos, yPos, speed) {
+    constructor(name) {
         this.name = name;
-        this.xPosition = xPos;
-        this.yPosition = yPos;
-        this.speed = speed;
     }
     getXPos() {
         return this.xPosition;
@@ -20,6 +17,12 @@ export default class GameItem {
     }
     setYPos(yPos) {
         this.yPosition = yPos;
+    }
+    getSpeed() {
+        return this.speed;
+    }
+    setSpeed(speed) {
+        this.speed = speed;
     }
 }
 //# sourceMappingURL=GameItem.js.map

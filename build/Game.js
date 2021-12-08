@@ -41,8 +41,7 @@ export default class Game {
         this.scoringItemOutOfCanvas();
         this.player.collidesWithScoringItem(this.scoringItems);
         if (this.framecounter % 500 === 0) {
-            const speed = Game.randomInteger(0, 15);
-            this.scoringItems.push(new PowerUp('PowerUp', this.canvas.width, this.canvas.height, speed));
+            this.scoringItems.push(new PowerUp(this.canvas.width, this.canvas.height));
         }
         this.player.move();
         requestAnimationFrame(this.loop);
@@ -59,11 +58,10 @@ export default class Game {
             yPosition = 0;
             image = Game.loadNewImage('./assets/rocket-vertical.png');
         }
-        const speed = Game.randomInteger(0, 15);
-        return new Rocket(name, xPosition, yPosition, speed, type);
+        return new Rocket(type, xPosition, yPosition);
     }
     createPlayer(name) {
-        return new Player(name, this.canvas.width / 2, this.canvas.height / 2);
+        return new Player(this.canvas.width / 2, this.canvas.height / 2);
     }
     move() {
         this.scoringItems.forEach((rocket) => {
@@ -72,7 +70,7 @@ export default class Game {
     }
     scoringItemOutOfCanvas() {
         this.scoringItems.forEach((scoringItem) => {
-            scoringItem.outOfCanvas(this.canvas.width, this.canvas.height, this.canvas);
+            scoringItem.outOfCanvas(this.canvas.width, this.canvas.height);
         });
     }
     static loadNewImage(source) {
